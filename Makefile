@@ -19,6 +19,11 @@ RED=$(shell tput -Txterm setaf 1)
 BLUE=$(shell tput -Txterm setaf 6)
 RESET=$(shell tput -Txterm sgr0)
 
+# Build Okteto
+build-okteto:
+	@okteto build -f Dockerfile -t okteto/sandbox:2 .
+	@okteto build -f containers/app/Dockerfile -t okteto/cindy:2 .
+
 # Build
 build:
 	@echo "$(GREEN)Building project...$(RESET)"
