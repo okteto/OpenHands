@@ -21,8 +21,8 @@ RESET=$(shell tput -Txterm sgr0)
 
 # Build Okteto
 build-okteto:
-	@okteto build -f Dockerfile -t okteto/sandbox:2 .
-	@okteto build -f containers/app/Dockerfile -t okteto/cindy:2 .
+	@okteto build -f Dockerfile -t okteto/sandbox:3 .
+	@okteto build -f containers/app/Dockerfile -t okteto/cindy:3 .
 
 # Build
 build:
