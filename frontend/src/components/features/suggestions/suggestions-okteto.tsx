@@ -5,12 +5,15 @@ interface SuggestionsProps {
   onSuggestionClick: (value: string) => void;
 }
 
-export function Suggestions({
+export function SuggestionsOkteto({
   suggestions,
   onSuggestionClick,
 }: SuggestionsProps) {
   return (
-    <ul data-testid="suggestions" className="flex flex-col gap-4 w-full">
+    <ul
+      data-testid="suggestions"
+      className="flex flex-col gap-4 w-full max-w-md"
+    >
       {suggestions.map((suggestion, index) => (
         <SuggestionItem
           key={index}

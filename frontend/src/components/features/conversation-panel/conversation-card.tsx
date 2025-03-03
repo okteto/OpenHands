@@ -101,7 +101,7 @@ export function ConversationCard({
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-4 w-full">
           {isActive && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
           {titleMode === "edit" && (
             <input
