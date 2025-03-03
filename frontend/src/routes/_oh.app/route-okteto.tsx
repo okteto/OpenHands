@@ -6,12 +6,12 @@ import {
   ConversationProvider,
   useConversation,
 } from "#/context/conversation-context";
-import { Controls } from "#/components/features/controls/controls";
+import { ControlsOkteto } from "#/components/features/controls/controls-okteto";
 import { clearMessages, addUserMessage } from "#/state/chat-slice";
 import { clearTerminal } from "#/state/command-slice";
 import { useEffectOnce } from "#/hooks/use-effect-once";
 import { clearJupyter } from "#/state/jupyter-slice";
-import { ChatInterface } from "../../components/features/chat/chat-interface";
+import { ChatInterfaceOkteto } from "../../components/features/chat/chat-interface-okteto";
 import { WsClientProvider } from "#/context/ws-client-provider";
 import { EventHandler } from "./event-handler";
 import { useConversationConfig } from "#/hooks/query/use-conversation-config";
@@ -68,17 +68,6 @@ function AppContent() {
     dispatch(clearJupyter());
   });
 
-  function handleResize() {
-    setWidth(window.innerWidth);
-  }
-
-  React.useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   const {
     isOpen: securityModalIsOpen,
     onOpen: onSecurityModalOpen,
@@ -91,11 +80,11 @@ function AppContent() {
         <div data-testid="app-route" className="flex flex-col h-full">
           <div className="flex h-full">
             <div className="w-full">
-              <ChatInterface />
+              <ChatInterfaceOkteto />
             </div>
           </div>
 
-          <Controls
+          <ControlsOkteto
             setSecurityOpen={onSecurityModalOpen}
             showSecurityLock={!!settings?.SECURITY_ANALYZER}
           />
