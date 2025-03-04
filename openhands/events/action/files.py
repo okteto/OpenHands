@@ -21,6 +21,7 @@ class FileReadAction(Action):
     runnable: ClassVar[bool] = True
     security_risk: ActionSecurityRisk | None = None
     impl_source: FileReadSource = FileReadSource.DEFAULT
+    view_range: list[int] | None = None  # ONLY used in OH_ACI mode
 
     @property
     def message(self) -> str:
