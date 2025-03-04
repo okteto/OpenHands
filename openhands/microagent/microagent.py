@@ -10,6 +10,7 @@ from openhands.core.exceptions import (
 )
 from openhands.core.logger import openhands_logger as logger
 from openhands.microagent.types import MicroAgentMetadata, MicroAgentType
+from openhands.microagent.okteto import OktetoMicroagentContent, OktetoMicroagentName
 
 
 class BaseMicroAgent(BaseModel):
@@ -125,7 +126,6 @@ class TaskMicroAgent(BaseMicroAgent):
         if self.type != MicroAgentType.TASK:
             raise ValueError('TaskMicroAgent must have type TASK')
 
-
 def load_microagents_from_dir(
     microagent_dir: Union[str, Path],
 ) -> tuple[
@@ -168,4 +168,11 @@ def load_microagents_from_dir(
             except Exception as e:
                 raise ValueError(f'Error loading agent from {file}: {e}')
 
+    repo_agents[OktetoMicroagentName] = RepoMicroAgent(
+            name=OktetoMicroagentName,
+            content=OktetoMicroagentContent,
+            metadata=MicroAgentMetadata(name=OktetoMicroagentName, type=MicroAgentType.REPO_KNOWLEDGE),
+            source=str(OktetoMicroagentName),
+            type=MicroAgentType.REPO_KNOWLEDGE,
+        )
     return repo_agents, knowledge_agents, task_agents
