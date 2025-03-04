@@ -40,7 +40,7 @@ export const useTerminal = ({
       fontFamily: "Inconsolata, monospace",
       fontSize: 14,
       theme: {
-        background: "#111318",
+        background: "#24272E",
       },
     });
 
