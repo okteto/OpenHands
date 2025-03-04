@@ -16,6 +16,7 @@ export default {
         success: "var(--green)",
         tertiary: "var(--navy)", // gray, used for inputs
         "tertiary-light": "red", // lighter gray, used for borders and placeholder text
+        content: "var(--white)", // light gray, used mostly for text
 
         "neutral-1100": "var(--navy-extra-extra-dark)",
         "neutral-1000": "var(--navy-extra-dark)",
