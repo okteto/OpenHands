@@ -21,8 +21,8 @@ RESET=$(shell tput -Txterm sgr0)
 
 # Build Okteto
 build-okteto:
-	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/sandbox:0.27.0-okteto-3 .
-	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/cindy:0.27.0-okteto-3 .
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/sandbox:0.27.0-okteto-4 .
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/cindy:0.27.0-okteto-4 .
 
 # Build
 build:
