@@ -121,7 +121,7 @@ class DockerRuntime(ActionExecutionClient):
         #             'error',
         #             f'Container {self.container_name} not found.',
         #         )
-        #         raise e
+        #         raise AgentRuntimeDisconnectedError from e
         #     if self.runtime_container_image is None:
         #         if self.base_container_image is None:
         #             raise ValueError(
@@ -136,7 +136,6 @@ class DockerRuntime(ActionExecutionClient):
         #             force_rebuild=self.config.sandbox.force_rebuild_runtime,
         #             extra_build_args=self.config.sandbox.runtime_extra_build_args,
         #         )
-
         #     self.log(
         #         'info', f'Starting runtime with image: {self.runtime_container_image}'
         #     )
@@ -204,25 +203,38 @@ class DockerRuntime(ActionExecutionClient):
     #     use_host_network = self.config.sandbox.use_host_network
     #     network_mode: str | None = 'host' if use_host_network else None
 
-    #     # Initialize port mappings
-    #     port_mapping: dict[str, list[dict[str, str]]] | None = None
-    #     if not use_host_network:
-    #         port_mapping = {
-    #             f'{self._container_port}/tcp': [{'HostPort': str(self._host_port)}],
-    #         }
+        # # Initialize port mappings
+        # port_mapping: dict[str, list[dict[str, str]]] | None = None
+        # if not use_host_network:
+        #     port_mapping = {
+        #         f'{self._container_port}/tcp': [
+        #             {
+        #                 'HostPort': str(self._host_port),
+        #                 'HostIp': self.config.sandbox.runtime_binding_address,
+        #             }
+        #         ],
+        #     }
 
-    #         if self.vscode_enabled:
-    #             port_mapping[f'{self._vscode_port}/tcp'] = [
-    #                 {'HostPort': str(self._vscode_port)}
-    #             ]
+        #     if self.vscode_enabled:
+        #         port_mapping[f'{self._vscode_port}/tcp'] = [
+        #             {
+        #                 'HostPort': str(self._vscode_port),
+        #                 'HostIp': self.config.sandbox.runtime_binding_address,
+        #             }
+        #         ]
 
-    #         for port in self._app_ports:
-    #             port_mapping[f'{port}/tcp'] = [{'HostPort': str(port)}]
-    #     else:
-    #         self.log(
-    #             'warn',
-    #             'Using host network mode. If you are using MacOS, please make sure you have the latest version of Docker Desktop and enabled host network feature: https://docs.docker.com/network/drivers/host/#docker-desktop',
-    #         )
+        #     for port in self._app_ports:
+        #         port_mapping[f'{port}/tcp'] = [
+        #             {
+        #                 'HostPort': str(port),
+        #                 'HostIp': self.config.sandbox.runtime_binding_address,
+        #             }
+        #         ]
+        # else:
+        #     self.log(
+        #         'warn',
+        #         'Using host network mode. If you are using MacOS, please make sure you have the latest version of Docker Desktop and enabled host network feature: https://docs.docker.com/network/drivers/host/#docker-desktop',
+        #     )
 
     #     # Combine environment variables
     #     environment = {
@@ -313,6 +325,7 @@ class DockerRuntime(ActionExecutionClient):
     #     self.container = self.docker_client.containers.get(self.container_name)
     #     if self.container.status == 'exited':
     #         self.container.start()
+
     #     config = self.container.attrs['Config']
     #     for env_var in config['Env']:
     #         if env_var.startswith('port='):
@@ -320,11 +333,18 @@ class DockerRuntime(ActionExecutionClient):
     #             self._container_port = self._host_port
     #         elif env_var.startswith('VSCODE_PORT='):
     #             self._vscode_port = int(env_var.split('VSCODE_PORT=')[1])
+
     #     self._app_ports = []
-    #     for exposed_port in config['ExposedPorts'].keys():
-    #         exposed_port = int(exposed_port.split('/tcp')[0])
-    #         if exposed_port != self._host_port and exposed_port != self._vscode_port:
-    #             self._app_ports.append(exposed_port)
+    #     exposed_ports = config.get('ExposedPorts')
+    #     if exposed_ports:
+    #         for exposed_port in exposed_ports.keys():
+    #             exposed_port = int(exposed_port.split('/tcp')[0])
+    #             if (
+    #                 exposed_port != self._host_port
+    #                 and exposed_port != self._vscode_port
+    #             ):
+    #                 self._app_ports.append(exposed_port)
+
     #     self.api_url = f'{self.config.sandbox.local_runtime_url}:{self._container_port}'
     #     self.log(
     #         'debug',
