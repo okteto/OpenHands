@@ -118,7 +118,8 @@ export function ConversationCard({
           {titleMode === "view" && (
             <p
               data-testid="conversation-card-title"
-              className="text-sm leading-6 font-semibold bg-transparent w-full"
+              className="text-sm leading-6 font-semibold bg-transparent truncate overflow-hidden"
+              title={title}
             >
               {title}
             </p>
