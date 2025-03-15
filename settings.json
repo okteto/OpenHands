@@ -1,0 +1,72 @@
+{
+    "workbench.colorCustomizations": {
+        "editor.background": "#111318",
+        "editor.foreground": "#FFFFFF",
+        "editorCursor.foreground": "#FF6B00",
+        "editor.selectionBackground": "#232935",
+        "editor.lineHighlightBackground": "#1e222b",
+        "editor.lineHighlightBorder": "#242a36",
+        "editor.selectionHighlightBackground": "#242a37",
+        "editor.inactiveSelectionBackground": "#191d26",
+        "editorIndentGuide.background": "#232935",
+        "editorIndentGuide.activeBackground": "#1e222b",
+
+        "editorBracketMatch.background": "#242a36",
+        "editorBracketMatch.border": "#FF6B00",
+
+        "editorGutter.background": "#111318",
+        "editorGutter.addedBackground": "#00C49A",
+        "editorGutter.modifiedBackground": "#FF6B00",
+        "editorGutter.deletedBackground": "#FF4F4F",
+
+        "editorWhitespace.foreground": "#242a37",
+
+        "activityBar.background": "#111318",
+        "activityBar.foreground": "#FFFFFF",
+        "activityBar.activeBorder": "#FF6B00",
+        "activityBarBadge.background": "#FF6B00",
+
+        "sideBar.background": "#232935",
+        "sideBar.foreground": "#FFFFFF",
+        "sideBarTitle.foreground": "#FFFFFF",
+
+        "statusBar.background": "#1e222b",
+        "statusBar.foreground": "#FFFFFF",
+        "statusBarItem.hoverBackground": "#242a36",
+
+        "titleBar.activeBackground": "#1e222b",
+        "titleBar.activeForeground": "#FFFFFF",
+
+        "button.background": "#FF6B00",
+        "button.foreground": "#FFFFFF",
+        "button.hoverBackground": "#D95A00",
+
+        "dropdown.background": "#1e222b",
+        "dropdown.foreground": "#FFFFFF",
+
+        "input.background": "#1e222b",
+        "input.foreground": "#FFFFFF",
+        "input.border": "#242a36",
+
+        "terminal.background": "#111318",
+        "terminal.foreground": "#FFFFFF",
+        "terminalCursor.foreground": "#FF6B00",
+        "terminal.ansiBlack": "#111318",
+        "terminal.ansiBlue": "#1340A0",
+        "terminal.ansiCyan": "#00C49A",
+        "terminal.ansiGreen": "#00C49A",
+        "terminal.ansiMagenta": "#884DFF",
+        "terminal.ansiRed": "#FF4F4F",
+        "terminal.ansiWhite": "#FFFFFF",
+        "terminal.ansiYellow": "#FF6B00",
+        "terminal.ansiBrightBlack": "#232935",
+        "terminal.ansiBrightBlue": "#1E4DB7",
+        "terminal.ansiBrightCyan": "#00E5C0",
+        "terminal.ansiBrightGreen": "#00E5C0",
+        "terminal.ansiBrightMagenta": "#B366FF",
+        "terminal.ansiBrightRed": "#FF6B6B",
+        "terminal.ansiBrightWhite": "#FFFFFF",
+        "terminal.ansiBrightYellow": "#FFA000"
+    },
+    "workbench.colorTheme": "Default Dark+"
+}
