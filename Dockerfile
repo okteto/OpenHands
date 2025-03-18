@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1
 ENV GOLANG_VERSION 1.22.0
 ENV PATH $PATH:/usr/local/go/bin
 
-RUN apt-get update && apt-get install -y supervisor gettext-base wget curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y supervisor gettext-base wget curl gh && rm -rf /var/lib/apt/lists/*
 
 # Download and install Go
 RUN wget -q https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz \
