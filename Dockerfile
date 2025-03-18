@@ -16,7 +16,9 @@ RUN wget -q https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz \
 # Verify installation
 RUN go version
 
+COPY cindy-chat-participant-extension-0.0.2.vsix /tmp/exts/cindy-chat-participant-extension-0.0.2.vsix
 COPY install-vscode-extensions.sh ./install-vscode-extensions.sh
+
 RUN bash ./install-vscode-extensions.sh
 
 RUN mkdir -p /root/.openvscode-server/data/Machine

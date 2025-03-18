@@ -17,6 +17,7 @@ export OPENVSCODE="/openhands/.openvscode-server/bin/openvscode-server"
 # Extensions to install (from open-vsx.org and downloaded vsix)
 exts=(
     "golang.Go"  # from open-vsx.org
+    "/tmp/exts/cindy-chat-participant-extension-0.0.2.vsix"
     # "${tdir}"/*.vsix       # downloaded .vsix files
 )
 
