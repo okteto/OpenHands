@@ -238,11 +238,7 @@ class ActionExecutor:
             )
 
     async def _init_bash_commands(self):
-        INIT_COMMANDS = [
-            'git config --file ./.git_config user.name "openhands" && git config --file ./.git_config user.email "openhands@all-hands.dev" && alias git="git --no-pager" && export GIT_CONFIG=$(pwd)/.git_config'
-            if os.environ.get('LOCAL_RUNTIME_MODE') == '1'
-            else 'git config --global user.name "openhands" && git config --global user.email "openhands@all-hands.dev" && alias git="git --no-pager"'
-        ]
+        INIT_COMMANDS = []
         logger.debug(f'Initializing by running {len(INIT_COMMANDS)} bash commands...')
         for command in INIT_COMMANDS:
             action = CmdRunAction(command=command)

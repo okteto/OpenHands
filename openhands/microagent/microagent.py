@@ -10,8 +10,6 @@ from openhands.core.exceptions import (
 )
 from openhands.core.logger import openhands_logger as logger
 from openhands.microagent.types import MicroAgentMetadata, MicroAgentType
-from openhands.microagent.okteto import OktetoMicroagentContent, OktetoMicroagentName
-
 
 class BaseMicroAgent(BaseModel):
     """Base class for all microagents."""
@@ -168,11 +166,18 @@ def load_microagents_from_dir(
             except Exception as e:
                 raise ValueError(f'Error loading agent from {file}: {e}')
 
-    repo_agents[OktetoMicroagentName] = RepoMicroAgent(
-            name=OktetoMicroagentName,
-            content=OktetoMicroagentContent,
-            metadata=MicroAgentMetadata(name=OktetoMicroagentName, type=MicroAgentType.REPO_KNOWLEDGE),
-            source=str(OktetoMicroagentName),
-            type=MicroAgentType.REPO_KNOWLEDGE,
-        )
+    cindyAgentPath = Path('/okteto/cindy.md')
+    if cindyAgentPath.is_file():
+        try:
+            agent = BaseMicroAgent.load(cindyAgentPath)
+            if isinstance(agent, RepoMicroAgent):
+                repo_agents[agent.name] = agent
+            elif isinstance(agent, KnowledgeMicroAgent):
+                knowledge_agents[agent.name] = agent
+            elif isinstance(agent, TaskMicroAgent):
+                task_agents[agent.name] = agent
+            logger.debug(f'Loaded agent {agent.name} from {cindyAgentPath}')
+        except Exception as e:
+            raise ValueError(f'Error loading agent from {cindyAgentPath}: {e}')
+
     return repo_agents, knowledge_agents, task_agents

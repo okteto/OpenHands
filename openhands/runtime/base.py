@@ -4,6 +4,7 @@ import copy
 import json
 import os
 import random
+import requests
 import shutil
 import string
 import tempfile
@@ -263,6 +264,21 @@ class Runtime(FileEditRuntimeMixin):
             return
         self.event_stream.add_event(observation, source)  # type: ignore[arg-type]
 
+    def get_user_info(self, user_token) -> None:
+        headers = {
+            'Authorization': f'token {user_token}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
+        response = requests.get('https://api.github.com/user', headers=headers)
+
+        if response.status_code == 200:
+            data = response.json()
+            username = data.get('login')
+            email = data.get('email') or f"{username}@users.noreply.github.com"
+            return username, email
+        else:
+            response.raise_for_status()
+
     def clone_repo(
         self,
         github_token: SecretStr,
@@ -274,30 +290,34 @@ class Runtime(FileEditRuntimeMixin):
                 'github_token and selected_repository must be provided to clone a repository'
             )
         url = f'https://{github_token.get_secret_value()}@github.com/{selected_repository}.git'
-        dir_name = selected_repository.split('/')[1]
 
         # Generate a random branch name to avoid conflicts
         random_str = ''.join(
-            random.choices(string.ascii_lowercase + string.digits, k=8)
+            random.choices(string.ascii_lowercase + string.digits, k=10)
         )
-        openhands_workspace_branch = f'openhands-workspace-{random_str}'
+        openhands_workspace_branch = f'cindy/workspace-{random_str}'
 
         # Clone repository command
-        clone_command = f'git clone {url} {dir_name}'
-
-        # Checkout to appropriate branch
-        checkout_command = (
-            f'git checkout {selected_branch}'
+        clone_command = (
+            f'git clone --depth 1 -b {selected_branch} {url} .'
             if selected_branch
-            else f'git checkout -b {openhands_workspace_branch}'
+            else f'git clone --depth 1 {url} .'
         )
+
+        # Checkout to a new branch
+        checkout_command = f'git checkout -b {openhands_workspace_branch}'
+
+        submodules_command = f'git submodule update --init --recursive'
+
+        username, useremail = self.get_user_info(github_token.get_secret_value())
+        config_command = f'git config user.name {username} && git config user.email {useremail}'
 
         action = CmdRunAction(
-            command=f'{clone_command} ; cd {dir_name} ; {checkout_command}',
+            command=f'{clone_command} ; {checkout_command} ; {submodules_command} ; {config_command}',
         )
-        self.log('info', f'Cloning repo: {selected_repository}')
+        self.log('info', f'Cloning repo: {selected_repository}: {clone_command} ; {checkout_command} ; {submodules_command} ; {config_command}')
         self.run_action(action)
-        return dir_name
+        return "."
 
     def get_microagents_from_selected_repo(
         self, selected_repository: str | None
@@ -313,7 +333,7 @@ class Runtime(FileEditRuntimeMixin):
         microagents_dir = workspace_root / '.openhands' / 'microagents'
         repo_root = None
         if selected_repository:
-            repo_root = workspace_root / selected_repository.split('/')[1]
+            repo_root = workspace_root
             microagents_dir = repo_root / '.openhands' / 'microagents'
         self.log(
             'info',
