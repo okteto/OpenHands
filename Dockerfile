@@ -28,4 +28,6 @@ COPY supervisord.conf /etc/supervisor/supervisord.conf
 
 RUN alias git="git --no-pager"
 
+RUN ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]

@@ -315,7 +315,7 @@ class Runtime(FileEditRuntimeMixin):
         action = CmdRunAction(
             command=f'{clone_command} ; {checkout_command} ; {submodules_command} ; {config_command}',
         )
-        self.log('info', f'Cloning repo: {selected_repository}: {clone_command} ; {checkout_command} ; {submodules_command} ; {config_command}')
+        self.log('info', f'Cloning repo: {selected_repository}')
         self.run_action(action)
         return "."
 
