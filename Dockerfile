@@ -16,7 +16,7 @@ RUN wget -q https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz \
 # Verify installation
 RUN go version
 
-COPY cindy-chat-participant-extension-0.0.2.vsix /tmp/exts/cindy-chat-participant-extension-0.0.2.vsix
+COPY cindy-vscode-extension-0.0.3.vsix /tmp/exts/cindy-vscode-extension-0.0.3.vsix
 COPY install-vscode-extensions.sh ./install-vscode-extensions.sh
 
 RUN bash ./install-vscode-extensions.sh
@@ -28,6 +28,7 @@ COPY supervisord.conf /etc/supervisor/supervisord.conf
 
 RUN alias git="git --no-pager"
 
+RUN mkdir -p ~/.ssh
 RUN ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
