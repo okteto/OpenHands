@@ -1,4 +1,14 @@
+FROM golang:1.23.6-bookworm AS builder
+
+WORKDIR /app
+COPY main.go go.mod go.sum /app/
+COPY sshforward /app/sshforward
+RUN go build -o /usr/local/bin/ssh-forward
+
+
 FROM okteto/cindy-sandbox:base
+
+COPY --from=builder /usr/local/bin/ssh-forward /usr/local/bin/ssh-forward
 
 ENV PYTHONUNBUFFERED=1
 
@@ -30,5 +40,6 @@ RUN alias git="git --no-pager"
 
 RUN mkdir -p ~/.ssh
 RUN ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+RUN mkdir -p /okteto/.ssh
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
