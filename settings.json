@@ -1,4 +1,6 @@
 {
+    "workbench.startupEditor": "readme",
+    "workbench.welcomePage.walkthroughs.openOnInstall": false,
     "workbench.colorCustomizations": {
         "editor.background": "#111318",
         "editor.foreground": "#FFFFFF",
