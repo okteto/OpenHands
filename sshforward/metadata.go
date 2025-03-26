@@ -31,7 +31,6 @@ type metadataItem struct {
 type Metadata struct {
 	InternalCertificateBase64 string
 	SshAgentHostname          string
-	SshAgentInternalIP        string
 	SshAgentPort              string
 }
 
@@ -88,8 +87,6 @@ func queryOktetoMetadata(ctx context.Context, oktetoUrl, oktetoToken, oktetoName
 			metadata.InternalCertificateBase64 = pair.Value
 		case "sshAgentHostname":
 			metadata.SshAgentHostname = pair.Value
-		case "sshAgentInternalIP":
-			metadata.SshAgentInternalIP = pair.Value
 		case "sshAgentPort":
 			metadata.SshAgentPort = pair.Value
 		}

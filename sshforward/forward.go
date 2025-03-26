@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"context"
 	"crypto/tls"
+	"crypto/x509"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -22,17 +24,27 @@ type sshForwarder struct {
 	getTLSConfig func() *tls.Config
 }
 
-func newSSHForwarder() *sshForwarder {
+func newSSHForwarder(tlsCfg *tls.Config) *sshForwarder {
 	return &sshForwarder{
-		getTLSConfig: newTLSConfigWithSystemCA,
+		getTLSConfig: func() *tls.Config { return tlsCfg },
 	}
 }
 
 // CA is not specified because it should use System CA root. When remote-run command is executed,
 // the CA should be already available as the CLI set it in the Dockerfile used as a base to
 // run the command
-func newTLSConfigWithSystemCA() *tls.Config {
-	return &tls.Config{}
+func newTLSConfig(certBase64 string) (*tls.Config, error) {
+	certBytes, err := base64.StdEncoding.DecodeString(certBase64)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode certificate from base64: %w", err)
+	}
+
+	rootCAs := x509.NewCertPool()
+	if ok := rootCAs.AppendCertsFromPEM(certBytes); !ok {
+		return nil, fmt.Errorf("failed to append certificate to Root CAs")
+	}
+
+	return &tls.Config{RootCAs: rootCAs}, nil
 }
 
 // startSshForwarder This functions starts the ssh-forwarded process expected to be run on remote-run commands.

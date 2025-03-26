@@ -37,19 +37,14 @@ func Start() *cobra.Command {
 				log.Fatal("error querying metadata", err)
 			}
 
-			log.Print("updating /etc/hosts...")
-			if err := updateEtcHosts(metadata.SshAgentHostname, metadata.SshAgentInternalIP); err != nil {
-				log.Fatal("error updating /etc/hosts", err)
-			}
-
-			certPath := "/etc/ssl/certs/okteto-internal.crt"
-			log.Printf("installing certificate to %s\n", certPath)
-			if err := saveCertificate(metadata.InternalCertificateBase64, certPath); err != nil {
-				log.Fatal("error installing certificate", err)
+			log.Println("creating tls config from in-memory certificate...")
+			tlsCfg, err := newTLSConfig(metadata.InternalCertificateBase64)
+			if err != nil {
+				log.Fatal("error creating TLS config:", err)
 			}
 
 			log.Println("starting the ssh forward...")
-			sshForwarder := newSSHForwarder()
+			sshForwarder := newSSHForwarder(tlsCfg)
 			sshForwarder.startSshForwarder(ctx, metadata.SshAgentHostname, metadata.SshAgentPort, "/okteto/.ssh/agent.sock", oktetoToken)
 		},
 	}
