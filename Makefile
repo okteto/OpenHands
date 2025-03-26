@@ -19,6 +19,11 @@ RED=$(shell tput -Txterm setaf 1)
 BLUE=$(shell tput -Txterm setaf 6)
 RESET=$(shell tput -Txterm sgr0)
 
+# Build Okteto
+build-okteto:
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/sandbox:0.28.0-okteto-a .
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/cindy:0.28.0-okteto-a .
+
 # Build
 build:
 	@echo "$(GREEN)Building project...$(RESET)"
