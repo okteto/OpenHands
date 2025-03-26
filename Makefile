@@ -21,8 +21,13 @@ RESET=$(shell tput -Txterm sgr0)
 
 # Build Okteto
 build-okteto:
-	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/sandbox:0.28.0-okteto-a .
-	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/cindy:0.28.0-okteto-a .
+	@open -a Docker
+	@echo "Waiting 10s for Docker to start..."
+	@sleep 10
+	@poetry run python3 openhands/runtime/utils/runtime_build.py --base_image nikolaik/python-nodejs:python3.12-nodejs22 --build_folder containers/runtime
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/runtime/Dockerfile -t okteto/cindy-sandbox:base containers/runtime
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/cindy-sandbox:0.30.0-okteto-1t1 .
+	@OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/cindy-agent:0.30.0-okteto-1t1 .
 
 # Build
 build:
