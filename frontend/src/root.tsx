@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import "./tailwind.css";
-import "./index.css";
+import "./index-okteto.css";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 

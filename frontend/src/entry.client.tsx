@@ -9,28 +9,12 @@ import { HydratedRouter } from "react-router/dom";
 import React, { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import posthog from "posthog-js";
 import "./i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import store from "./store";
-import { useConfig } from "./hooks/query/use-config";
 import { AuthProvider } from "./context/auth-context";
 import { queryClientConfig } from "./query-client-config";
-
-function PosthogInit() {
-  const { data: config } = useConfig();
-
-  React.useEffect(() => {
-    if (config?.POSTHOG_CLIENT_KEY) {
-      posthog.init(config.POSTHOG_CLIENT_KEY, {
-        api_host: "https://us.i.posthog.com",
-        person_profiles: "identified_only",
-      });
-    }
-  }, [config]);
-
-  return null;
-}
+import { SettingsProvider } from "./context/settings-context";
 
 async function prepareApp() {
   if (
@@ -55,8 +39,9 @@ prepareApp().then(() =>
         <Provider store={store}>
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
-              <HydratedRouter />
-              <PosthogInit />
+              <SettingsProvider>
+                <HydratedRouter />
+              </SettingsProvider>
             </QueryClientProvider>
           </AuthProvider>
         </Provider>
