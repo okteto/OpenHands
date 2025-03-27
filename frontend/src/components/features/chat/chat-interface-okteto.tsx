@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import posthog from "posthog-js";
+import { useParams } from "react-router";
 import { convertImageToBase64 } from "#/utils/convert-image-to-base-64";
+import { TrajectoryActions } from "../trajectory/trajectory-actions";
 import { createChatMessage } from "#/services/chat-service";
-import { InteractiveChatBox } from "./interactive-chat-box-okteto";
+import { InteractiveChatBox } from "./interactive-chat-box";
 import { addUserMessage } from "#/state/chat-slice";
 import { RootState } from "#/store";
 import { AgentState } from "#/types/agent-state";
@@ -14,15 +16,15 @@ import { useWsClient } from "#/context/ws-client-provider";
 import { Messages } from "./messages";
 import { ChatSuggestionsOkteto } from "./chat-suggestions-okteto";
 import { ActionSuggestions } from "./action-suggestions";
+
 import { ScrollToBottomButton } from "#/components/shared/buttons/scroll-to-bottom-button";
 import { LoadingSpinner } from "#/components/shared/loading-spinner";
+import { useGetTrajectory } from "#/hooks/mutation/use-get-trajectory";
+import { downloadTrajectory } from "#/utils/download-trajectory";
+import { displayErrorToast } from "#/utils/custom-toast-handlers";
 
-function getEntryPoint(
-  hasRepository: boolean | null,
-  hasImportedProjectZip: boolean | null,
-): string {
+function getEntryPoint(hasRepository: boolean | null): string {
   if (hasRepository) return "github";
-  if (hasImportedProjectZip) return "zip";
   return "direct";
 }
 
@@ -35,20 +37,23 @@ export function ChatInterfaceOkteto() {
 
   const { messages } = useSelector((state: RootState) => state.chat);
   const { curAgentState } = useSelector((state: RootState) => state.agent);
+
+  const [, setFeedbackPolarity] = React.useState<"positive" | "negative">(
+    "positive",
+  );
+  const [, setFeedbackModalIsOpen] = React.useState(false);
   const [messageToSend, setMessageToSend] = React.useState<string | null>(null);
-  const { selectedRepository, importedProjectZip } = useSelector(
+  const { selectedRepository } = useSelector(
     (state: RootState) => state.initialQuery,
   );
+  const params = useParams();
+  const { mutate: getTrajectory } = useGetTrajectory();
 
   const handleSendMessage = async (content: string, files: File[]) => {
     if (messages.length === 0) {
       posthog.capture("initial_query_submitted", {
-        entry_point: getEntryPoint(
-          selectedRepository !== null,
-          importedProjectZip !== null,
-        ),
+        entry_point: getEntryPoint(selectedRepository !== null),
         query_character_length: content.length,
-        uploaded_zip_size: importedProjectZip?.length,
       });
     } else {
       posthog.capture("user_message_sent", {
@@ -69,6 +74,32 @@ export function ChatInterfaceOkteto() {
   const handleStop = () => {
     posthog.capture("stop_button_clicked");
     send(generateAgentStateChangeEvent(AgentState.STOPPED));
+  };
+
+  const onClickShareFeedbackActionButton = async (
+    polarity: "positive" | "negative",
+  ) => {
+    setFeedbackModalIsOpen(true);
+    setFeedbackPolarity(polarity);
+  };
+
+  const onClickExportTrajectoryButton = () => {
+    if (!params.conversationId) {
+      displayErrorToast("ConversationId unknown, cannot download trajectory");
+      return;
+    }
+
+    getTrajectory(params.conversationId, {
+      onSuccess: async (data) => {
+        await downloadTrajectory(
+          params.conversationId ?? "unknown",
+          data.trajectory,
+        );
+      },
+      onError: (error) => {
+        displayErrorToast(error.message);
+      },
+    });
   };
 
   const isWaitingForUserInput =
@@ -112,6 +143,16 @@ export function ChatInterfaceOkteto() {
 
       <div className="flex flex-col gap-[6px] px-4 pb-4">
         <div className="flex justify-between relative">
+          <TrajectoryActions
+            onPositiveFeedback={() =>
+              onClickShareFeedbackActionButton("positive")
+            }
+            onNegativeFeedback={() =>
+              onClickShareFeedbackActionButton("negative")
+            }
+            onExportTrajectory={() => onClickExportTrajectoryButton()}
+          />
+
           <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0">
             {curAgentState === AgentState.RUNNING && <TypingIndicator />}
           </div>
