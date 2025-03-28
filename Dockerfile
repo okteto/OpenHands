@@ -26,7 +26,7 @@ RUN wget -q https://go.dev/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz \
 # Verify installation
 RUN go version
 
-COPY cindy-vscode-extension-0.0.8.vsix /tmp/exts/cindy-vscode-extension-0.0.8.vsix
+COPY cindy-vscode-extension-0.0.9.vsix /tmp/exts/cindy-vscode-extension-0.0.9.vsix
 COPY install-vscode-extensions.sh ./install-vscode-extensions.sh
 
 RUN bash ./install-vscode-extensions.sh
