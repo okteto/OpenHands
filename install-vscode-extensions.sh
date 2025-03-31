@@ -17,7 +17,7 @@ export OPENVSCODE="/openhands/.openvscode-server/bin/openvscode-server"
 # Extensions to install (from open-vsx.org and downloaded vsix)
 exts=(
     "golang.Go"  # from open-vsx.org
-    "/tmp/exts/cindy-vscode-extension-0.0.9.vsix"
+    "/tmp/exts/cindy-vscode-extension-0.0.10.vsix"
     # "${tdir}"/*.vsix       # downloaded .vsix files
 )
 
