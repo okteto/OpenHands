@@ -13,7 +13,7 @@ COPY --from=builder /usr/local/bin/ssh-forward /usr/local/bin/ssh-forward
 ENV PYTHONUNBUFFERED=1
 
 # Set environment variables for Go
-ENV GOLANG_VERSION 1.22.0
+ENV GOLANG_VERSION 1.23.0
 ENV PATH $PATH:/usr/local/go/bin
 
 RUN apt-get update && apt-get install -y supervisor gettext-base wget curl gh && rm -rf /var/lib/apt/lists/*

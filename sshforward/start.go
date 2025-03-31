@@ -30,22 +30,18 @@ func Start() *cobra.Command {
 			if oktetoNamespace == "" {
 				log.Fatal("OKTETO_NAMESPACE is not set")
 			}
-
-			log.Println("quering Okteto API metadata")
-			metadata, err := queryOktetoMetadata(ctx, oktetoUrl, oktetoToken, oktetoNamespace)
-			if err != nil {
-				log.Fatal("error querying metadata", err)
+			oktetoSshAgentHostname := os.Getenv("OKTETO_SSH_AGENT_HOSTNAME")
+			if oktetoNamespace == "" {
+				log.Fatal("OKTETO_SSH_AGENT_HOSTNAME is not set")
 			}
-
-			log.Println("creating tls config from in-memory certificate...")
-			tlsCfg, err := newTLSConfig(metadata.InternalCertificateBase64)
-			if err != nil {
-				log.Fatal("error creating TLS config:", err)
+			oktetoSshAgentPort := os.Getenv("OKTETO_SSH_AGENT_PORT")
+			if oktetoNamespace == "" {
+				log.Fatal("OKTETO_SSH_AGENT_PORT is not set")
 			}
 
 			log.Println("starting the ssh forward...")
-			sshForwarder := newSSHForwarder(tlsCfg)
-			sshForwarder.startSshForwarder(ctx, metadata.SshAgentHostname, metadata.SshAgentPort, "/okteto/.ssh/agent.sock", oktetoToken)
+			sshForwarder := newSSHForwarder()
+			sshForwarder.startSshForwarder(ctx, oktetoSshAgentHostname, oktetoSshAgentPort, "/okteto/.ssh/agent.sock", oktetoToken)
 		},
 	}
 
