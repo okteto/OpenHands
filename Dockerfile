@@ -6,7 +6,7 @@ COPY sshforward /app/sshforward
 RUN go build -o /usr/local/bin/ssh-forward
 
 
-FROM okteto/cindy-sandbox:base
+FROM okteto/agent-sandbox:base
 
 COPY --from=builder /usr/local/bin/ssh-forward /usr/local/bin/ssh-forward
 
