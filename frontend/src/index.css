@@ -2,20 +2,25 @@
 @import url('assets/fonts/inconsolata/inconsolata.css');
 
 :root {
-  --navy-extra-light: #9aa9cd;
-  --navy-light: #808ca9;
-  --navy-lighter: #475060;
-  --navy-a-bit-lighter: #374153;
-  --navy: #232935;
-  --navy-dark: #1e222b;
-  --navy-extra-dark: #181b22;
-  --navy-extra-extra-dark: #111318;
-  --green: #00d1ca;
-  --red: #f6323a;
-  --blue: #4a90e2;
-  --white: #ffffff;
+  --palette-green: rgb(0, 209, 202);
+  --palette-red: rgb(255, 77, 97);
+  --palette-lavender: rgb(177, 197, 236);
+  --palette-steel: rgb(100, 157, 225);
+  --palette-ocean: rgb(46, 125, 218);
+  --palette-orange: rgb(252, 163, 38);
+
+  --palette-neutral-0: rgb(21, 24, 30);
+  --palette-neutral-1: rgb(28, 33, 45);
+  --palette-neutral-2: rgb(36, 42, 56);
+  --palette-neutral-3: rgb(39, 46, 61); /* navy blue */
+  --palette-neutral-4: rgb(54, 64, 82);
+  --palette-neutral-5: rgb(66, 79, 103);
+  --palette-neutral-6: rgb(153, 162, 183);
+  --palette-neutral-7: rgb(195, 200, 213); /* storm grey */
+  --palette-neutral-8: rgb(217, 220, 228);
+  --palette-neutral-9: rgb(255, 255, 255);
   
-  background-color: rgb(var(--navy)) !important;
+  background-color: rgb(var(--palette-neutral-3)) !important;
 }
 
 body {
@@ -23,7 +28,7 @@ body {
   font-family: 'CircularXXWeb', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--navy);
+  background: var(--palette-neutral-3);
 }
 
 code {

@@ -1,14 +1,7 @@
 import React from "react";
 import { useRouteError, isRouteErrorResponse, Outlet } from "react-router";
 import i18n from "#/i18n";
-import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
-import { useIsAuthed } from "#/hooks/query/use-is-authed";
-import { useConfig } from "#/hooks/query/use-config";
-import { WaitlistModal } from "#/components/features/waitlist/waitlist-modal";
-import { AnalyticsConsentFormModal } from "#/components/features/analytics/analytics-consent-form-modal";
 import { useSettings } from "#/hooks/query/use-settings";
-import { useAuth } from "#/context/auth-context";
-import { useMigrateUserConsent } from "#/hooks/use-migrate-user-consent";
 
 export function ErrorBoundary() {
   const error = useRouteError();
@@ -43,23 +36,7 @@ export function ErrorBoundary() {
 }
 
 export default function MainApp() {
-  const { githubTokenIsSet } = useAuth();
   const { data: settings } = useSettings();
-  const { migrateUserConsent } = useMigrateUserConsent();
-
-  const [consentFormIsOpen, setConsentFormIsOpen] = React.useState(false);
-
-  const config = useConfig();
-  const {
-    data: isAuthed,
-    isFetching: isFetchingAuth,
-    isError: authError,
-  } = useIsAuthed();
-
-  const gitHubAuthUrl = useGitHubAuthUrl({
-    appMode: config.data?.APP_MODE || null,
-    gitHubClientId: config.data?.GITHUB_CLIENT_ID || null,
-  });
 
   React.useEffect(() => {
     if (settings?.LANGUAGE) {
@@ -67,52 +44,14 @@ export default function MainApp() {
     }
   }, [settings?.LANGUAGE]);
 
-  React.useEffect(() => {
-    const consentFormModalIsOpen =
-      settings?.USER_CONSENTS_TO_ANALYTICS === null;
-
-    setConsentFormIsOpen(consentFormModalIsOpen);
-  }, [settings]);
-
-  React.useEffect(() => {
-    // Migrate user consent to the server if it was previously stored in localStorage
-    migrateUserConsent({
-      handleAnalyticsWasPresentInLocalStorage: () => {
-        setConsentFormIsOpen(false);
-      },
-    });
-  }, []);
-
-  const userIsAuthed = !!isAuthed && !authError;
-  const renderWaitlistModal =
-    !isFetchingAuth && !userIsAuthed && config.data?.APP_MODE === "saas";
-
   return (
     <div
       data-testid="root-layout"
       className="bg-base h-screen overflow-x-hidden flex flex-col md:flex-row gap-3"
     >
-      <div
-        id="root-outlet"
-        className="h-[calc(100%-50px)] md:h-full w-full relative"
-      >
+      <div id="root-outlet" className="h-full w-full relative">
         <Outlet />
       </div>
-
-      {renderWaitlistModal && (
-        <WaitlistModal
-          ghTokenIsSet={githubTokenIsSet}
-          githubAuthUrl={gitHubAuthUrl}
-        />
-      )}
-
-      {config.data?.APP_MODE === "oss" && consentFormIsOpen && (
-        <AnalyticsConsentFormModal
-          onClose={() => {
-            setConsentFormIsOpen(false);
-          }}
-        />
-      )}
     </div>
   );
 }
