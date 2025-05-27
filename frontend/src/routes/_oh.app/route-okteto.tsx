@@ -1,4 +1,3 @@
-import { useDisclosure } from "@heroui/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -6,7 +5,6 @@ import {
   ConversationProvider,
   useConversation,
 } from "#/context/conversation-context";
-import { ControlsOkteto } from "#/components/features/controls/controls-okteto";
 import { clearMessages, addUserMessage } from "#/state/chat-slice";
 import { clearTerminal } from "#/state/command-slice";
 import { useEffectOnce } from "#/hooks/use-effect-once";
@@ -15,16 +13,13 @@ import { ChatInterfaceOkteto } from "../../components/features/chat/chat-interfa
 import { WsClientProvider } from "#/context/ws-client-provider";
 import { EventHandler } from "./event-handler";
 import { useConversationConfig } from "#/hooks/query/use-conversation-config";
-import Security from "#/components/shared/modals/security/security";
 import { useEndSession } from "#/hooks/use-end-session";
 import { useUserConversation } from "#/hooks/query/use-user-conversation";
-import { useSettings } from "#/hooks/query/use-settings";
 import { clearFiles, clearInitialPrompt } from "#/state/initial-query-slice";
 import { RootState } from "#/store";
 
 function AppContent() {
   useConversationConfig();
-  const { data: settings } = useSettings();
   const { conversationId } = useConversation();
   const { data: conversation, isFetched } = useUserConversation(
     conversationId || null,
@@ -68,12 +63,6 @@ function AppContent() {
     dispatch(clearJupyter());
   });
 
-  const {
-    isOpen: securityModalIsOpen,
-    onOpen: onSecurityModalOpen,
-    onOpenChange: onSecurityModalOpenChange,
-  } = useDisclosure();
-
   return (
     <WsClientProvider conversationId={conversationId}>
       <EventHandler>
@@ -83,19 +72,6 @@ function AppContent() {
               <ChatInterfaceOkteto />
             </div>
           </div>
-
-          <ControlsOkteto
-            setSecurityOpen={onSecurityModalOpen}
-            showSecurityLock={!!settings?.SECURITY_ANALYZER}
-          />
-
-          {settings && (
-            <Security
-              isOpen={securityModalIsOpen}
-              onOpenChange={onSecurityModalOpenChange}
-              securityAnalyzer={settings.SECURITY_ANALYZER}
-            />
-          )}
         </div>
       </EventHandler>
     </WsClientProvider>

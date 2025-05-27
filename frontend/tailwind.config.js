@@ -9,26 +9,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "var(--green)", // nice yellow
-        base: "var(--navy)", // dark background (neutral-900)
-        "base-secondary": "var(--navy-dark)", // lighter background (neutral-800); also used for tooltips
-        danger: "var(--red)",
-        success: "var(--green)",
-        tertiary: "var(--navy)", // gray, used for inputs
-        "tertiary-light": "red", // lighter gray, used for borders and placeholder text
-        content: "var(--white)", // light gray, used mostly for text
+        primary: "var(--palette-neutral-9)", // nice yellow
+        base: "var(--palette-neutral-3)", // dark background 
+        "base-secondary": "var(--palette-neutral-1)", // lighter background (neutral-800); also used for tooltips
+        danger: "var(--palette-red)",
+        success: "var(--palette-green)",
+        tertiary: "var(--palette-neutral-4)", // gray, used for inputs
+        "tertiary-light": "var(--palette-red)", // lighter gray, used for borders and placeholder text
+        content: "var(--palette-neutral-9)", // used mostly for text
 
-        "neutral-1100": "var(--navy-extra-extra-dark)",
-        "neutral-1000": "var(--navy-extra-dark)",
-        "neutral-900": "var(--navy-dark)",
-        "neutral-800": "var(--navy-darker)",
-        "neutral-700": "var(--navy)", 
-        "neutral-600": "var(--navy-a-bit-lighter)",
-        "neutral-500": "var(--navy-lighter)",
-        "neutral-400": "var(--navy-light)",
-        "neutral-300": "var(--navy-extra-light)",
+        "neutral-1100": "var(--palette-neutral-0)",
+        "neutral-1000": "var(--palette-neutral-0)",
+        "neutral-900": "var(--palette-neutral-1)",
+        "neutral-800": "var(--palette-neutral-2)",
+        "neutral-700": "var(--palette-neutral-3)", 
+        "neutral-600": "var(--palette-neutral-4)",
+        "neutral-500": "var(--palette-neutral-5)",
+        "neutral-400": "var(--palette-neutral-6)",
+        "neutral-300": "var(--palette-neutral-7)",
 
-        "red-500": "var(--red)"
+        "red-500": "var(--palette-red)"
       },
     },
   },
