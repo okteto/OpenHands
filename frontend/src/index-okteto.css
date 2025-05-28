@@ -1,0 +1,65 @@
+:root {
+  --navy-extra-light: #9aa9cd;
+  --navy-light: #808ca9;
+  --navy-lighter: #475060;
+  --navy-a-bit-lighter: #374153;
+  --navy: #232935;
+  --navy-dark: #1e222b;
+  --navy-extra-dark: #181b22;
+  --navy-extra-extra-dark: #111318;
+  --green: #00d1ca;
+  --red: #f6323a;
+  --blue: #4a90e2;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system, "SF Pro", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.markdown-body code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: #2a3038;
+  border-radius: 4px;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  letter-spacing: -0.2px;
+}
+
+.markdown-body pre code {
+  padding: 0;
+  background-color: inherit;
+}
+
+.markdown-body {
+  white-space: pre-wrap; /* Handles line breaks */
+}
+
+.markdown-body th {
+  text-align: left;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 0.1rem 1rem;
+}
+
+/* Fast smooth scrolling for chat interface */
+.fast-smooth-scroll {
+  scroll-behavior: smooth;
+  scroll-timeline: 100ms;
+}
