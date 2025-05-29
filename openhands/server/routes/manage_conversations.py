@@ -103,7 +103,11 @@ async def _create_new_conversation(
         extra={'user_id': user_id, 'session_id': conversation_id},
     )
 
-    conversation_title = get_default_conversation_title(conversation_id)
+    conversation_title = await auto_generate_title(conversation_id, user_id, initial_user_msg)
+
+    # If we still don't have a title, use the default
+    if not conversation_title or conversation_title.isspace():
+        conversation_title = get_default_conversation_title(conversation_id)
 
     logger.info(f'Saving metadata for conversation {conversation_id}')
     await conversation_store.save_metadata(
@@ -265,7 +269,7 @@ def get_default_conversation_title(conversation_id: str) -> str:
     return f'Conversation {conversation_id[:5]}'
 
 
-async def auto_generate_title(conversation_id: str, user_id: str | None) -> str:
+async def auto_generate_title(conversation_id: str, user_id: str | None, initial_user_msg: str | None) -> str:
     """
     Auto-generate a title for a conversation based on the first user message.
     Uses LLM-based title generation if available, otherwise falls back to a simple truncation.
@@ -279,56 +283,36 @@ async def auto_generate_title(conversation_id: str, user_id: str | None) -> str:
     """
     logger.info(f'Auto-generating title for conversation {conversation_id}')
 
+    if not initial_user_msg:
+        return get_default_conversation_title(conversation_id)
+
+    # Get LLM config from user settings
     try:
-        # Create an event stream for the conversation
-        event_stream = EventStream(conversation_id, file_store, user_id)
+        settings_store = await SettingsStoreImpl.get_instance(config, user_id)
+        settings = await settings_store.load()
 
-        # Find the first user message
-        first_user_message = None
-        for event in event_stream.get_events():
-            if (
-                event.source == EventSource.USER
-                and isinstance(event, MessageAction)
-                and event.content
-                and event.content.strip()
-            ):
-                first_user_message = event.content
-                break
+        if settings and settings.llm_model:
+            # Create LLM config from settings
+            llm_config = LLMConfig(
+                model=settings.llm_model,
+                api_key=settings.llm_api_key,
+                base_url=settings.llm_base_url,
+            )
 
-        if first_user_message:
-            # Get LLM config from user settings
-            try:
-                settings_store = await SettingsStoreImpl.get_instance(config, user_id)
-                settings = await settings_store.load()
-
-                if settings and settings.llm_model:
-                    # Create LLM config from settings
-                    llm_config = LLMConfig(
-                        model=settings.llm_model,
-                        api_key=settings.llm_api_key,
-                        base_url=settings.llm_base_url,
-                    )
-
-                    # Try to generate title using LLM
-                    llm_title = await generate_conversation_title(
-                        first_user_message, llm_config
-                    )
-                    if llm_title:
-                        logger.info(f'Generated title using LLM: {llm_title}')
-                        return llm_title
-            except Exception as e:
-                logger.error(f'Error using LLM for title generation: {e}')
-
-            # Fall back to simple truncation if LLM generation fails or is unavailable
-            first_user_message = first_user_message.strip()
-            title = first_user_message[:30]
-            if len(first_user_message) > 30:
-                title += '...'
-            logger.info(f'Generated title using truncation: {title}')
-            return title
+            # Try to generate title using LLM
+            llm_title = await generate_conversation_title(
+                initial_user_msg, llm_config
+            )
+            if llm_title:
+                logger.info(f'Generated title using LLM: {llm_title}')
+                return llm_title
     except Exception as e:
-        logger.error(f'Error generating title: {str(e)}')
-    return ''
+        logger.error(f'Error using LLM for title generation: {e}')
+        title = initial_user_msg[:30]
+        if len(initial_user_msg) > 30:
+            title += '...'
+        logger.info(f'Generated title using truncation: {title}')
+        return title
 
 
 @app.patch('/conversations/{conversation_id}')

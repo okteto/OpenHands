@@ -1,0 +1,8 @@
+dev:
+  openhands:
+    selector:
+      cindy.okteto.com: "true"
+    command: bash
+    workdir: /tmp
+    sync:
+      - openhands:/app/openhands
