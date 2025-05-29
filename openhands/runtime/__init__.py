@@ -5,6 +5,7 @@ from openhands.runtime.impl.docker.docker_runtime import (
 )
 from openhands.runtime.impl.e2b.e2b_runtime import E2BRuntime
 from openhands.runtime.impl.local.local_runtime import LocalRuntime
+from openhands.runtime.impl.okteto.okteto_runtime import OktetoRuntime
 from openhands.runtime.impl.modal.modal_runtime import ModalRuntime
 from openhands.runtime.impl.remote.remote_runtime import RemoteRuntime
 from openhands.runtime.impl.runloop.runloop_runtime import RunloopRuntime
@@ -14,6 +15,7 @@ from openhands.utils.import_utils import get_impl
 _DEFAULT_RUNTIME_CLASSES: dict[str, type[Runtime]] = {
     'eventstream': DockerRuntime,
     'docker': DockerRuntime,
+    'okteto': OktetoRuntime,
     'e2b': E2BRuntime,
     'remote': RemoteRuntime,
     'modal': ModalRuntime,
@@ -47,6 +49,7 @@ __all__ = [
     'ModalRuntime',
     'RunloopRuntime',
     'DockerRuntime',
+    'OktetoRuntime',
     'DaytonaRuntime',
     'get_runtime_cls',
 ]

@@ -74,6 +74,52 @@ def get_default_conversation_title(conversation_id: str) -> str:
     """
     return f'Conversation {conversation_id[:5]}'
 
+async def okteto_auto_generate_title(
+    conversation_id: str, user_id: str | None, settings: Settings, initial_user_msg: str | None
+) -> str:
+    """
+    Auto-generate a title for a conversation based on the first user message.
+    Uses LLM-based title generation if available, otherwise falls back to a simple truncation.
+
+    Args:
+        conversation_id: The ID of the conversation
+        user_id: The ID of the user
+
+    Returns:
+        A generated title string
+    """
+    logger.info(f'Auto-generating title for conversation {conversation_id}')
+
+    if not initial_user_msg:
+        logger.warning('No initial user message provided for title generation')
+        return get_default_conversation_title(conversation_id)
+    
+    try:
+        if settings and settings.llm_model:
+            # Create LLM config from settings
+            llm_config = LLMConfig(
+                model=settings.llm_model,
+                api_key=settings.llm_api_key,
+                base_url=settings.llm_base_url,
+            )
+
+            # Try to generate title using LLM
+            llm_title = await generate_conversation_title(
+                initial_user_msg, llm_config
+            )
+            if llm_title:
+                logger.info(f'Generated title using LLM: {llm_title}')
+                return llm_title
+    except Exception as e:
+        logger.error(f'Error using LLM for title generation: {e}')
+
+            # Fall back to simple truncation if LLM generation fails or is unavailable
+    initial_user_msg = initial_user_msg.strip()
+    title = initial_user_msg[:30]
+    if len(initial_user_msg) > 30:
+        title += '...'
+    logger.info(f'Generated title using truncation: {title}')
+    return title
 
 async def auto_generate_title(
     conversation_id: str, user_id: str | None, file_store: FileStore, settings: Settings

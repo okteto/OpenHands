@@ -24,6 +24,10 @@ from openhands.server.data_models.conversation_info import ConversationInfo
 from openhands.server.data_models.conversation_info_result_set import (
     ConversationInfoResultSet,
 )
+from openhands.utils.conversation_summary import (
+    okteto_auto_generate_title,
+)
+
 from openhands.server.session.conversation_init_data import ConversationInitData
 from openhands.server.shared import (
     ConversationStoreImpl,
@@ -137,7 +141,11 @@ async def _create_new_conversation(
         extra={'user_id': user_id, 'session_id': conversation_id},
     )
 
-    conversation_title = get_default_conversation_title(conversation_id)
+    conversation_title = await okteto_auto_generate_title(conversation_id, user_id, settings, initial_user_msg)
+
+    # If we still don't have a title, use the default
+    if not conversation_title or conversation_title.isspace():
+        conversation_title = get_default_conversation_title(conversation_id)
 
     logger.info(f'Saving metadata for conversation {conversation_id}')
     await conversation_store.save_metadata(

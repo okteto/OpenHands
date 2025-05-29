@@ -364,6 +364,7 @@ class ActionExecutor:
 
         INIT_COMMANDS.append(no_pager_cmd)
 
+        INIT_COMMANDS = []
         logger.info(f'Initializing by running {len(INIT_COMMANDS)} bash commands...')
         for command in INIT_COMMANDS:
             action = CmdRunAction(command=command)
