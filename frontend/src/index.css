@@ -1,26 +1,34 @@
+@import url('assets/fonts/Circular.css');
+@import url('assets/fonts/inconsolata/inconsolata.css');
+
 :root {
-  --bg-dark: #0c0e10;
-  --bg-light: #292929;
-  --bg-input: #393939;
-  --bg-workspace: #1f2228;
-  --border: #3c3c4a;
-  --text-editor-base: #9099ac;
-  --text-editor-active: #c4cbda;
-  --bg-editor-sidebar: #24272e;
-  --bg-editor-active: #31343d;
-  --border-editor-sidebar: #3c3c4a;
-  background-color: var(--base) !important;
-  --bg-neutral-muted: #afb8c133;
+  --palette-green: rgb(0, 209, 202);
+  --palette-red: rgb(255, 77, 97);
+  --palette-lavender: rgb(177, 197, 236);
+  --palette-steel: rgb(100, 157, 225);
+  --palette-ocean: rgb(46, 125, 218);
+  --palette-orange: rgb(252, 163, 38);
+
+  --palette-neutral-0: rgb(21, 24, 30);
+  --palette-neutral-1: rgb(28, 33, 45);
+  --palette-neutral-2: rgb(36, 42, 56);
+  --palette-neutral-3: rgb(39, 46, 61); /* navy blue */
+  --palette-neutral-4: rgb(54, 64, 82);
+  --palette-neutral-5: rgb(66, 79, 103);
+  --palette-neutral-6: rgb(153, 162, 183);
+  --palette-neutral-7: rgb(195, 200, 213); /* storm grey */
+  --palette-neutral-8: rgb(217, 220, 228);
+  --palette-neutral-9: rgb(255, 255, 255);
+  
+  background-color: rgb(var(--palette-neutral-3)) !important;
 }
 
 body {
   margin: 0;
-  font-family:
-    -apple-system, "SF Pro", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'CircularXXWeb', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--palette-neutral-3);
 }
 
 code {
@@ -56,10 +64,4 @@ code {
 .markdown-body th,
 .markdown-body td {
   padding: 0.1rem 1rem;
-}
-
-/* Fast smooth scrolling for chat interface */
-.fast-smooth-scroll {
-  scroll-behavior: smooth;
-  scroll-timeline: 100ms;
 }

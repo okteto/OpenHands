@@ -9,17 +9,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#C9B974", // nice yellow
-        logo: "#CFB755", // color for logos and icons
-        base: "#0D0F11", // dark background also used for tooltips
-        "base-secondary": "#24272E", // lighter background
-        danger: "#E76A5E",
-        success: "#A5E75E",
-        basic: "#9099AC", // light gray
-        tertiary: "#454545", // gray, used for inputs
-        "tertiary-light": "#B7BDC2", // lighter gray, used for borders and placeholder text
-        content: "#ECEDEE", // light gray, used mostly for text
-        "content-2": "#F9FBFE",
+        primary: "var(--palette-neutral-9)", // nice yellow
+        base: "var(--palette-neutral-3)", // dark background 
+        "base-secondary": "var(--palette-neutral-1)", // lighter background (neutral-800); also used for tooltips
+        danger: "var(--palette-red)",
+        success: "var(--palette-green)",
+        tertiary: "var(--palette-neutral-4)", // gray, used for inputs
+        "tertiary-light": "var(--palette-red)", // lighter gray, used for borders and placeholder text
+        content: "var(--palette-neutral-9)", // used mostly for text
+        "content-2": "var(--palette-neutral-8)", // light gray
+
+        "neutral-1100": "var(--palette-neutral-0)",
+        "neutral-1000": "var(--palette-neutral-0)",
+        "neutral-900": "var(--palette-neutral-1)",
+        "neutral-800": "var(--palette-neutral-2)",
+        "neutral-700": "var(--palette-neutral-3)", 
+        "neutral-600": "var(--palette-neutral-4)",
+        "neutral-500": "var(--palette-neutral-5)",
+        "neutral-400": "var(--palette-neutral-6)",
+        "neutral-300": "var(--palette-neutral-7)",
+
+        "red-500": "var(--palette-red)"
       },
     },
   },
@@ -36,8 +46,7 @@ export default {
       themes: {
         dark: {
           colors: {
-            primary: "#4465DB",
-            logo: "#CFB755",
+            primary: "var(--palette-steel)", // blue
           },
         },
       },

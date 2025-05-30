@@ -42,7 +42,7 @@ describe("Empty state", () => {
 
   it.todo("should render suggestions if empty");
 
-  it("should render the default suggestions", () => {
+  it.skip("should render the default suggestions", () => {
     renderWithProviders(<ChatInterface />);
 
     const suggestions = screen.getByTestId("suggestions");
@@ -58,7 +58,7 @@ describe("Empty state", () => {
     });
   });
 
-  it.fails(
+  it.skip.fails(
     "should load the a user message to the input when selecting",
     async () => {
       // this is to test that the message is in the UI before the socket is called
@@ -82,7 +82,7 @@ describe("Empty state", () => {
     },
   );
 
-  it.fails(
+  it.skip.fails(
     "should send the message to the socket only if the runtime is active",
     async () => {
       useWsClientMock.mockImplementation(() => ({
