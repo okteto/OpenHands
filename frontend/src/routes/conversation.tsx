@@ -52,7 +52,7 @@ function AppContent() {
 
   function renderMain() {
     return (
-      <div className="rounded-xl overflow-hidden w-full">
+      <div className="overflow-hidden w-full">
         <ChatInterface />
       </div>
     );

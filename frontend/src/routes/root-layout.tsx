@@ -90,12 +90,9 @@ export default function MainApp() {
   return (
     <div
       data-testid="root-layout"
-      className="bg-base p-3 h-screen overflow-x-hidden flex flex-col md:flex-row gap-3"
+      className="bg-base h-screen overflow-x-hidden flex flex-col md:flex-row gap-3"
     >
-      <div
-        id="root-outlet"
-        className="h-[calc(100%-50px)] md:h-full w-full relative overflow-auto"
-      >
+      <div id="root-outlet" className="h-full w-full relative overflow-auto">
         <Outlet />
       </div>
     </div>
