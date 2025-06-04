@@ -119,11 +119,6 @@ class CodeActAgent(Agent):
             tools.append(ThinkTool)
         if self.config.enable_finish:
             tools.append(FinishTool)
-        if self.config.enable_browsing:
-            if sys.platform == 'win32':
-                logger.warning('Windows runtime does not support browsing yet')
-            else:
-                tools.append(BrowserTool)
         if self.config.enable_jupyter:
             tools.append(IPythonTool)
         if self.config.enable_llm_editor:

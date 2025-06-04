@@ -27,8 +27,8 @@ build-okteto:
 	@sleep 10
 	@poetry run python3 openhands/runtime/utils/runtime_build.py --base_image nikolaik/python-nodejs:python3.12-nodejs22 --build_folder containers/runtime
 	@OKTETO_CONTEXT=https://product.okteto.dev OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/runtime/Dockerfile -t okteto/agent-sandbox:base containers/runtime
-	@OKTETO_CONTEXT=https://product.okteto.dev OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/agent-sandbox:0.39.1-okteto-7 .
-	@OKTETO_CONTEXT=https://product.okteto.dev OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/agent:0.39.1-okteto-7 .
+	@OKTETO_CONTEXT=https://product.okteto.dev OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f Dockerfile -t okteto/agent-sandbox:0.39.1-okteto-9 .
+	@OKTETO_CONTEXT=https://product.okteto.dev OKTETO_LOCAL_REGISTRY_STORE_PRIORITY_ENABLED=true okteto build -f containers/app/Dockerfile -t okteto/agent:0.39.1-okteto-9 .
 
 # Build
 build:
