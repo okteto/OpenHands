@@ -1,6 +1,11 @@
 #!/bin/bash
 set -eu
 
+# We need to use the http path for the git repo, so the repo path is included in the git credential helper
+# and can be sent to the Okteto backend to generate the github action token for the right installation.
+git config --global credential.useHttpPath true
+git config --global credential.helper "!/okteto/git-credential-helper.sh"
+
 # Check if /workspace is empty
 if [ -z "$(ls -A /workspace)" ]; then
   echo "/workspace is empty. Cloning repository..."
