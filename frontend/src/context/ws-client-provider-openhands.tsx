@@ -238,11 +238,11 @@ export function WsClientProvider({
     sio.io.opts.query.latest_event_id = lastEventRef.current?.id;
     updateStatusWhenErrorMessagePresent(data);
 
-    // setErrorMessage(
-    //   hasValidMessageProperty(data)
-    //     ? data.message
-    //     : "The WebSocket connection was closed.",
-    // );
+    setErrorMessage(
+      hasValidMessageProperty(data)
+        ? data.message
+        : "The WebSocket connection was closed.",
+    );
   }
 
   function handleError(data: unknown) {
