@@ -32,5 +32,7 @@ RUN ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
 RUN mkdir -p /okteto/.ssh
 COPY clone.sh /okteto/clone.sh
 RUN chmod +x /okteto/clone.sh
+COPY git-credential-helper.sh /okteto/git-credential-helper.sh
+RUN chmod +x /okteto/git-credential-helper.sh
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
