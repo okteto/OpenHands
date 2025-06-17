@@ -89,7 +89,7 @@ const getFinishActionContent = (event: FinishAction): string => {
       break;
     case "partial":
     default:
-      // content += `\n\n\n${i18n.t("FINISH$TASK_COMPLETED_PARTIALLY")}`;
+      content += `\n\n\n${i18n.t("FINISH$TASK_COMPLETED_PARTIALLY")}`;
       break;
   }
 
