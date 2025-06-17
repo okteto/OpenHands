@@ -13,8 +13,6 @@ import { useWSErrorMessage } from "#/hooks/use-ws-error-message";
 import i18n from "#/i18n";
 import { ErrorMessageBanner } from "./error-message-banner";
 import { shouldRenderEvent } from "./event-content-helpers/should-render-event";
-import { OpenHandsAction } from "#/types/core/actions";
-import { OpenHandsObservation } from "#/types/core/observations";
 
 export function ChatInterfaceOkteto() {
   const { getErrorMessage } = useWSErrorMessage();
@@ -30,21 +28,6 @@ export function ChatInterfaceOkteto() {
 
   const events = parsedEvents.filter(shouldRenderEvent);
 
-  const emptyEvents: (OpenHandsAction | OpenHandsObservation)[] = [
-    {
-      id: 1,
-      timestamp: new Date().toISOString(),
-      source: "agent",
-      message: "Welcome! How can I assist you today?",
-      action: "message",
-      args: {
-        thought: "Welcome! How can I assist you today?",
-        image_urls: [],
-        wait_for_response: true,
-      },
-    },
-  ];
-
   return (
     <div className="h-full flex flex-col justify-between">
       <div
@@ -52,10 +35,6 @@ export function ChatInterfaceOkteto() {
         onScroll={(e) => onChatBodyScroll(e.currentTarget)}
         className="pt-4 scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-gray-800 hover:scrollbar-thumb-gray-300 flex flex-col grow overflow-y-auto overflow-x-hidden gap-2 fast-smooth-scroll"
       >
-        {events.length === 0 && (
-          <Messages messages={emptyEvents} isAwaitingUserConfirmation={false} />
-        )}
-
         {isLoadingMessages && (
           <div className="flex justify-center">
             <LoadingSpinner size="small" />
